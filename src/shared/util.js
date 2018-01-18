@@ -24,6 +24,7 @@ export function toNumber (val: string): number | string {
  * Make a map and return a function for checking if a key
  * is in that map.
  */
+// 这个工具方法主要是检查一个key是不是在某个字符串中
 export function makeMap (
   str: string,
   expectsLowerCase?: boolean
