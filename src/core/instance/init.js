@@ -55,12 +55,16 @@ export function initMixin (Vue: Class<Component>) {
     }
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
+      // 开发环境下，绑定vm._renderProxy为一个Proxy对象
+      // 主要代理的就是config.keyCodes和vm._renderProxy对象
       initProxy(vm)
     } else {
+      // 生产环境下就是vm自身
       vm._renderProxy = vm
     }
     // expose real self
     vm._self = vm
+    // 给vm添加$root, $parent, $children, $refs属性以及一些和生命周期相关的标识
     initLifecycle(vm)
     initEvents(vm)
     initRender(vm)

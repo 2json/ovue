@@ -8,6 +8,28 @@
     <script src="../dist/vue.js"></script>
 </head>
 <body>
-    
+    <div id="app">
+        <hello-world></hello-world>
+    </div>
+    <script>
+        Vue.config.keyCode = {
+            stop: '123'
+        }
+        var helloWorld = Vue.extend({
+            template: '<input @keydown.stop="hello" />',
+            methods: {
+                hello() {
+                    console.log('ok')
+                }
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            components: {
+                helloWorld: helloWorld
+            }
+        })
+        document.body.onkeydown = console.log.bind(console, 456)
+    </script>
 </body>
 </html>

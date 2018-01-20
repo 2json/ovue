@@ -24,22 +24,31 @@ export function initLifecycle (vm: Component) {
 
   // locate first non-abstract parent
   let parent = options.parent
+  // options.abstract用于判断组件是不是抽象组件，组件的父子关系的建立会跳过抽象组件，
+  // 抽象组件比如keep-alive, transition等
   if (parent && !options.abstract) {
+    // 选取上层就近的非抽象层组件作为自己的$parent
     while (parent.$options.abstract && parent.$parent) {
       parent = parent.$parent
     }
     parent.$children.push(vm)
   }
 
+  // 设置$parent属性
   vm.$parent = parent
+  // 设置$root属性
   vm.$root = parent ? parent.$root : vm
 
+  // 设置$children属性
   vm.$children = []
+  // 设置$refs属性
   vm.$refs = {}
 
+  // 和数据绑定相关的属性
   vm._watcher = null
   vm._inactive = null
   vm._directInactive = false
+  // 和生命周期相关的属性
   vm._isMounted = false
   vm._isDestroyed = false
   vm._isBeingDestroyed = false

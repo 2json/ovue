@@ -13,6 +13,7 @@ if (process.env.NODE_ENV !== 'production') {
     'require' // for Webpack/Browserify
   )
 
+  // 当我们在代码中引入没有定义的属性的时候就会出发这个警告
   const warnNonPresent = (target, key) => {
     warn(
       `Property or method "${key}" is not defined on the instance but ` +
@@ -22,12 +23,18 @@ if (process.env.NODE_ENV !== 'production') {
     )
   }
 
+  // 判断有没有原生的Proxy构造函数
   const hasProxy =
     typeof Proxy !== 'undefined' &&
     Proxy.toString().match(/native code/)
 
   if (hasProxy) {
+    // 是不是内置的属性修饰符号
     const isBuiltInModifier = makeMap('stop,prevent,self,ctrl,shift,alt,meta')
+    // 给 v-on 自定义键位别名
+    // https://cn.vuejs.org/v2/api/#keyCodes
+    // 开发环境下的config.keyCodes是proxy的形式
+    // Vue.config.keyCode['xxx'] = '....'
     config.keyCodes = new Proxy(config.keyCodes, {
       set (target, key, value) {
         if (isBuiltInModifier(key)) {
